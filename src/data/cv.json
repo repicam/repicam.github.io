@@ -1,139 +1,82 @@
 {
-  "schemaVersion": 1,
-  "cv": {
-    "name": "Iván Repiso",
-    "headline": "Desarrollador backend senior · Java y Spring Boot · Microservicios",
-    "location": "Paterna, Valencia",
-    "email": "irepisocamara@gmail.com",
-    "linkedin": "https://www.linkedin.com/in/ivan-repiso/",
-    "github": "https://github.com/repicam",
-    "about": "Desarrollador backend con más de seis años de experiencia en arquitecturas de microservicios. He desarrollado servicios con Java y el ecosistema Spring (Boot, Data, Cloud y Security) y, en mi etapa actual, librerías .NET compartidas por los microservicios y herramientas en Python que automatizan su generación. Fuera del trabajo construyo proyectos propios de principio a fin, del modelo de datos al despliegue. Busco un equipo en el que aportar experiencia técnica, cuidar la calidad del código y seguir creciendo.",
-    "experience": [
-      {
-        "company": "Indra",
-        "via": "Métrica Consulting SL",
-        "sector": "",
-        "role": "Desarrollador de software",
-        "start": "2024-05",
-        "end": "",
-        "description": "Proyecto basado en microservicios. Desarrollo de librerías con .NET para usar con los microservicios y de una herramienta en Python que autogenera microservicios.",
-        "achievements": [],
-        "technologies": [
-          "C#",
-          ".NET",
-          "Python",
-          "Git",
-          "Docker"
-        ]
-      },
-      {
-        "company": "PFS Group",
-        "via": "",
-        "sector": "",
-        "role": "Desarrollador de software",
-        "start": "2020-07",
-        "end": "2024-05",
-        "description": "Proyecto basado en microservicios. Desarrollo de software con Java y bases de datos SQL.",
-        "achievements": [],
-        "technologies": [
-          "Java",
-          "Spring Boot",
-          "Spring Data",
-          "Spring Cloud",
-          "Spring Security",
-          "JavaScript",
-          "SQL",
-          "Git",
-          "Docker",
-          "Kanban"
-        ]
-      }
-    ],
-    "projects": [
-      {
-        "name": "CompoundDays",
-        "url": "",
-        "description": "Aplicación personal de productividad (tareas, hábitos, entrenos y calendario) con captura desde el móvil por Telegram. API en Java 25 y Spring Boot 4 con PostgreSQL y Flyway, front en Angular 21 y PrimeNG, y un worker en Python; desplegada con Docker en un VPS propio con despliegue automático.",
-        "technologies": [
-          "Java",
-          "Spring Boot",
-          "PostgreSQL",
-          "Flyway",
-          "Angular",
-          "PrimeNG",
-          "Python",
-          "Docker"
-        ]
-      }
-    ],
-    "education": [
-      {
-        "title": "Técnico superior en Desarrollo de Aplicaciones Web (DAW)",
-        "center": "CIPFP Mislata",
-        "place": "Mislata, Valencia",
-        "year": "2020"
-      },
-      {
-        "title": "Técnico en Sistemas Microinformáticos y Redes (SMR)",
-        "center": "CIPFP Mislata",
-        "place": "Mislata, Valencia",
-        "year": "2018"
-      }
-    ],
-    "skills": [
-      {
-        "name": "Backend",
-        "items": [
-          "Java",
-          "Spring Boot",
-          "Spring Data",
-          "Spring Cloud",
-          "Spring Security",
-          "C#",
-          ".NET",
-          "Python"
-        ]
-      },
-      {
-        "name": "Datos",
-        "items": [
-          "SQL",
-          "Bases de datos relacionales"
-        ]
-      },
-      {
-        "name": "Frontend",
-        "items": [
-          "JavaScript"
-        ]
-      },
-      {
-        "name": "Herramientas",
-        "items": [
-          "Git",
-          "Docker",
-          "Kanban"
-        ]
-      }
-    ],
-    "practices": [],
-    "softSkills": [
-      "Trabajo en equipo",
-      "Organización",
-      "Creatividad",
-      "Resolutivo",
-      "Dinamismo",
-      "Responsabilidad"
-    ],
-    "languages": [
-      {
-        "name": "Castellano",
-        "level": "Nativo"
-      },
-      {
-        "name": "Inglés",
-        "level": "Intermedio"
-      }
-    ]
+  "schemaVersion" : 1,
+  "cv" : {
+    "name" : "Iván Repiso",
+    "headline" : "Desarrollador backend senior · Java y Spring Boot · Microservicios",
+    "location" : "Paterna, Valencia",
+    "email" : "irepisocamara@gmail.com",
+    "linkedin" : "https://www.linkedin.com/in/ivan-repiso/",
+    "github" : "https://github.com/repicam",
+    "about" : "Desarrollador backend senior con más de seis años de experiencia construyendo microservicios con Java y Spring en banca, gestión de tráfico aéreo y sector público. Actualmente trabajo en varios proyectos de smart city multitenant para ayuntamientos, donde he extraído las partes críticas de la plataforma a microservicios y aliviado la carga de la base de datos con caché. Me muevo de los requisitos a la arquitectura, y también en el front con Angular. Me gustan los equipos en los que aportar criterio técnico, cuidar la calidad del código y seguir creciendo.",
+    "experience" : [ {
+      "company" : "Attrim Group",
+      "via" : "",
+      "sector" : "Sector público · Smart city",
+      "role" : "Desarrollador backend senior",
+      "start" : "2025-08",
+      "end" : "",
+      "description" : "Desarrollo en varios proyectos de smart city multitenant para ayuntamientos: plataformas de gestión del agua, vertidos, partes de trabajo y turismo, entre otras.",
+      "achievements" : [ "Reduje la carga de la plataforma extrayendo sus módulos críticos a microservicios.", "Detecté la sobrecarga de la base de datos y cacheé las consultas más repetidas, invalidando la caché al crear o editar para no servir datos desactualizados.", "Diseñé y desarrollé de principio a fin un proyecto de gestión de vertidos, consumos y contratos de agua: requisitos, arquitectura e implementación." ],
+      "technologies" : [ "Java", "Spring Boot", "Spring Data", "Spring Cloud", "Spring Security", "Angular", "PrimeNG", "PostgreSQL", "GitLab" ]
+    }, {
+      "company" : "Indra",
+      "via" : "Métrica Consulting SL",
+      "sector" : "Gestión de tráfico aéreo",
+      "role" : "Desarrollador de software",
+      "start" : "2024-05",
+      "end" : "2025-08",
+      "description" : "Proyecto basado en microservicios. Desarrollo de librerías con .NET y una herramienta en Python para autogenerar microservicios.",
+      "achievements" : [ "Desarrollé una herramienta en Python que genera la base de un microservicio nuevo.", "Desarrollé librerías .NET compartidas por varios microservicios." ],
+      "technologies" : [ "C#", ".NET", "Python", "Git", "Docker" ]
+    }, {
+      "company" : "PFS Group",
+      "via" : "",
+      "sector" : "Banca",
+      "role" : "Desarrollador fullstack",
+      "start" : "2020-07",
+      "end" : "2024-05",
+      "description" : "Proyecto basado en microservicios. Desarrollo de software con Java, JavaScript y bases de datos SQL.",
+      "achievements" : [ "Desarrollé servicios para uso externo en un microservicio (REST y SOAP)", "Eliminé carga del monolito, extrayendo la lógica al microservicio" ],
+      "technologies" : [ "Java", "Spring Boot", "Spring Data", "Spring Cloud", "Spring Security", "JavaScript", "SQL", "Git", "Docker" ]
+    } ],
+    "projects" : [ {
+      "name" : "CompoundDays",
+      "url" : "",
+      "description" : "Aplicación personal de productividad (tareas, hábitos y calendario). Bot de Telegram para capturar desde el móvil, también por voz, e integración con Google Calendar. API en Java 25 y Spring Boot 4 con Spring Security (JWT), PostgreSQL y Flyway; front en Angular 21 y PrimeNG; worker en Python que transcribe audio con Whisper y resúmenes de enlaces con IA (Gemini, Groq). Desplegada con Docker en un VPS propio, con despliegue automático y copias de seguridad.",
+      "technologies" : [ "Java", "Spring Boot", "Spring Data JPA", "Spring Security", "PostgreSQL", "Flyway", "Angular", "PrimeNG", "Python", "Docker", "Telegram Bot API", "Google Calendar API" ]
+    } ],
+    "education" : [ {
+      "title" : "Técnico superior en Desarrollo de Aplicaciones Web (DAW)",
+      "center" : "CIPFP Mislata",
+      "place" : "Mislata, Valencia",
+      "year" : "2020"
+    }, {
+      "title" : "Técnico en Sistemas Microinformáticos y Redes (SMR)",
+      "center" : "CIPFP Mislata",
+      "place" : "Mislata, Valencia",
+      "year" : "2018"
+    } ],
+    "skills" : [ {
+      "name" : "Backend",
+      "items" : [ "Java", "Spring Boot", "Spring Data", "Spring Cloud", "Spring Security" ]
+    }, {
+      "name" : "Bases de datos",
+      "items" : [ "PostgreSQL", "Oracle", "MySQL", "MongoDB", "Redis" ]
+    }, {
+      "name" : "Frontend",
+      "items" : [ "Angular", "PrimeNG" ]
+    }, {
+      "name" : "Herramientas",
+      "items" : [ "Git", "GitLab", "Docker" ]
+    } ],
+    "practices" : [ "Microservicios", "Arquitectura multitenant", "Caché", "Migraciones con Flyway", "Agile/Scrum", "Testing con JUnit y Mockito", "CI/CD" ],
+    "softSkills" : [ "Trabajo en equipo", "Organización", "Creatividad", "Resolutivo", "Dinamismo", "Responsabilidad" ],
+    "languages" : [ {
+      "name" : "Castellano",
+      "level" : "Nativo"
+    }, {
+      "name" : "Inglés",
+      "level" : "Intermedio"
+    } ]
   }
 }
