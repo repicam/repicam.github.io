@@ -58,7 +58,7 @@
     } ],
     "skills" : [ {
       "name" : "Backend",
-      "items" : [ "Java", "Spring Boot", "Spring Data", "Spring Cloud", "Spring Security" ]
+      "items" : [ "Java", "Microservicios", "Spring Boot", "Spring Data", "Spring Security", "Spring Cloud" ]
     }, {
       "name" : "Bases de datos",
       "items" : [ "PostgreSQL", "Oracle", "MySQL", "MongoDB", "Redis" ]
