@@ -1,0 +1,479 @@
+---
+// Página principal: el CV. Los datos salen de src/data/cv.json, que publica CompoundDays (Trabajo → CV → Publicar);
+// cada commit de ese fichero vuelve a compilar y publicar la web.
+import data from '../data/cv.json';
+import '../styles/global.css';
+
+if (data.schemaVersion !== 1) {
+  throw new Error(`cv.json: schemaVersion ${data.schemaVersion} no soportada (se espera 1)`);
+}
+const cv = data.cv;
+
+const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+const formatMonth = (ym: string) => {
+  const [year, month] = ym.split('-').map(Number);
+  return `${MONTHS[month - 1]} ${year}`;
+};
+const period = (start: string, end: string) =>
+  `${start ? formatMonth(start) : ''} — ${end ? formatMonth(end) : 'actualidad'}`;
+
+/** Meses entre dos `YYYY-MM` (el fin vacío = hoy, en la fecha de compilación). */
+const now = new Date();
+const monthsOf = (start: string, end: string) => {
+  if (!start) return 0;
+  const [sy, sm] = start.split('-').map(Number);
+  const [ey, em] = end ? end.split('-').map(Number) : [now.getFullYear(), now.getMonth() + 1];
+  return Math.max(0, (ey - sy) * 12 + (em - sm));
+};
+const duration = (start: string, end: string) => {
+  const total = monthsOf(start, end);
+  const years = Math.floor(total / 12);
+  const months = total % 12;
+  const parts = [];
+  if (years) parts.push(`${years} ${years === 1 ? 'año' : 'años'}`);
+  if (months) parts.push(`${months} ${months === 1 ? 'mes' : 'meses'}`);
+  return parts.join(' y ');
+};
+
+const yearsOfExperience = Math.floor(cv.experience.reduce((sum, e) => sum + monthsOf(e.start, e.end), 0) / 12);
+const allTech = [
+  ...new Set([
+    ...cv.skills.flatMap((g) => g.items),
+    ...cv.experience.flatMap((e) => e.technologies),
+    ...cv.projects.flatMap((p) => p.technologies),
+  ]),
+];
+const stats = [
+  { value: yearsOfExperience, suffix: '+', label: 'años de experiencia' },
+  { value: cv.experience.length, suffix: '', label: cv.experience.length === 1 ? 'empresa' : 'empresas' },
+  { value: allTech.length, suffix: '', label: 'tecnologías' },
+];
+const current = cv.experience.find((e) => !e.end);
+const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+const firstName = cv.name.split(' ')[0];
+const description = [cv.headline, cv.location].filter(Boolean).join(' · ');
+/** Titular en dos líneas: hasta el primer « · », el puesto; el resto (tecnologías), debajo. */
+const [headlineRole, ...headlineRest] = cv.headline.split(' · ');
+const headlineTech = headlineRest.join(' · ');
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{cv.name} · CV</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={`${cv.name} · CV`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL('/photo.jpg', Astro.site).href} />
+    <meta name="theme-color" content="#070b1f" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="progress" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <a class="logo" href="#top" aria-label="Inicio">IR</a>
+      <nav aria-label="Secciones">
+        <a href="#experiencia">Experiencia</a>
+        {cv.projects.length > 0 && <a href="#proyectos">Proyectos</a>}
+        <a href="#habilidades">Habilidades</a>
+        <a href="#formacion">Formación</a>
+        <a class="nav-cta" href="#contacto">Contacto</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-text">
+          {current && (
+            <p class="badge reveal">
+              <span class="pulse"></span>
+              Ahora en {current.company}
+            </p>
+          )}
+          <h1 class="reveal">
+            <span class="hero-greeting">Hola, soy</span>
+            <span class="hero-name"><span class="gradient">{firstName}</span> {cv.name.slice(firstName.length).trim()}</span>
+          </h1>
+          <p class="headline reveal">
+            {headlineRole}
+            {headlineTech && <span class="headline-tech">{headlineTech}</span>}
+          </p>
+          {cv.location && <p class="location reveal">📍 {cv.location}</p>}
+          <div class="hero-actions reveal">
+            {cv.email && <a class="btn btn-primary" href={`mailto:${cv.email}`}>Hablemos</a>}
+            <a class="btn btn-ghost" href="#experiencia">Ver trayectoria ↓</a>
+            <button class="btn btn-ghost" type="button" data-print>Descargar PDF</button>
+          </div>
+        </div>
+        <div class="hero-photo reveal">
+          <div class="ring"></div>
+          <img src="/photo.jpg" alt={`Foto de ${cv.name}`} width="478" height="622" />
+          {allTech.slice(0, 4).map((tech, i) => <span class={`floating f${i}`}>{tech}</span>)}
+        </div>
+      </section>
+
+      <section class="stats" aria-label="En cifras">
+        {stats.map((s) => (
+          <div class="stat reveal spot">
+            <span class="stat-value"><span data-count={s.value}>{s.value}</span>{s.suffix}</span>
+            <span class="stat-label">{s.label}</span>
+          </div>
+        ))}
+      </section>
+
+      {cv.about && (
+        <section class="section about" id="sobre-mi">
+          <h2 class="section-title reveal">Sobre mí</h2>
+          <p class="about-text reveal">{cv.about}</p>
+        </section>
+      )}
+
+      {cv.experience.length > 0 && (
+        <section class="section" id="experiencia">
+          <h2 class="section-title reveal">Experiencia</h2>
+          <div class="timeline">
+            <span class="timeline-line" aria-hidden="true"><span class="timeline-fill"></span></span>
+            <ol class="jobs">
+            {cv.experience.map((e) => (
+              <li class="job reveal">
+                <span class={`dot ${e.end ? '' : 'dot-live'}`} aria-hidden="true"></span>
+                <article class="card spot">
+                  <header class="job-header">
+                    <div>
+                      <h3>{e.role}</h3>
+                      <p class="company">
+                        {e.company}
+                        {e.via && <span class="via"> · a través de {e.via}</span>}
+                      </p>
+                      {e.sector && <p class="sector">{e.sector}</p>}
+                    </div>
+                    <p class="when">
+                      <span>{period(e.start, e.end)}</span>
+                      {e.start && <span class="duration">{duration(e.start, e.end)}</span>}
+                    </p>
+                  </header>
+                  {e.description && <p class="job-description">{e.description}</p>}
+                  {e.achievements.length > 0 && (
+                    <ul class="achievements" aria-label="Logros">
+                      {e.achievements.map((a) => <li>{a}</li>)}
+                    </ul>
+                  )}
+                  {e.technologies.length > 0 && (
+                    <ul class="chips" aria-label="Tecnologías">
+                      {e.technologies.map((t) => <li>{t}</li>)}
+                    </ul>
+                  )}
+                </article>
+              </li>
+            ))}
+            </ol>
+          </div>
+        </section>
+      )}
+
+      {cv.projects.length > 0 && (
+        <section class="section" id="proyectos">
+          <h2 class="section-title reveal">Proyectos</h2>
+          <div class="projects-grid">
+            {cv.projects.map((p) => (
+              <article class="card spot project reveal">
+                <h3>
+                  {p.url ? (
+                    <a href={p.url} target="_blank" rel="noopener">{p.name}<span class="arrow">↗</span></a>
+                  ) : (
+                    p.name
+                  )}
+                </h3>
+                {p.description && <p class="muted">{p.description}</p>}
+                {p.technologies.length > 0 && (
+                  <ul class="chips" aria-label="Tecnologías">
+                    {p.technologies.map((t) => <li>{t}</li>)}
+                  </ul>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {(cv.skills.length > 0 || cv.practices.length > 0 || cv.softSkills.length > 0) && (
+        <section class="section" id="habilidades">
+          <h2 class="section-title reveal">Habilidades</h2>
+          {allTech.length > 0 && (
+            <div class="marquee reveal" aria-hidden="true">
+              <div class="marquee-track">
+                {[...allTech, ...allTech].map((t) => <span>{t}</span>)}
+              </div>
+            </div>
+          )}
+          <div class="skills-grid">
+            {cv.skills.map((g) => (
+              <article class="card spot reveal">
+                <h3>{g.name}</h3>
+                <ul class="chips">
+                  {g.items.map((t) => <li>{t}</li>)}
+                </ul>
+              </article>
+            ))}
+            {cv.practices.length > 0 && (
+              <article class="card spot reveal">
+                <h3>Prácticas de ingeniería</h3>
+                <ul class="chips">
+                  {cv.practices.map((t) => <li>{t}</li>)}
+                </ul>
+              </article>
+            )}
+            {cv.softSkills.length > 0 && (
+              <article class="card spot reveal">
+                <h3>Personales</h3>
+                <ul class="chips chips-soft">
+                  {cv.softSkills.map((t) => <li>{t}</li>)}
+                </ul>
+              </article>
+            )}
+          </div>
+        </section>
+      )}
+
+      {(cv.education.length > 0 || cv.languages.length > 0) && (
+        <section class="section" id="formacion">
+          <h2 class="section-title reveal">Formación e idiomas</h2>
+          <div class="edu-grid">
+            {cv.education.map((e) => (
+              <article class="card spot edu reveal">
+                {e.year && <span class="edu-year">{e.year}</span>}
+                <h3>{e.title}</h3>
+                <p class="muted">{[e.center, e.place].filter(Boolean).join(' · ')}</p>
+              </article>
+            ))}
+          </div>
+          {cv.languages.length > 0 && (
+            <ul class="languages">
+              {cv.languages.map((l) => (
+                <li class="reveal">
+                  <strong>{l.name}</strong>
+                  <span>{l.level}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
+
+      <section class="section contact" id="contacto">
+        <p class="contact-kicker reveal">¿Tienes un proyecto en mente?</p>
+        <h2 class="contact-title reveal">
+          {cv.email ? <a href={`mailto:${cv.email}`}>Hablemos<span class="arrow">→</span></a> : 'Hablemos'}
+        </h2>
+        <ul class="links reveal">
+          {cv.email && <li><a href={`mailto:${cv.email}`}>{cv.email}</a></li>}
+          {cv.linkedin && <li><a href={cv.linkedin} target="_blank" rel="noopener">{handle(cv.linkedin)}</a></li>}
+          {cv.github && <li><a href={cv.github} target="_blank" rel="noopener">{handle(cv.github)}</a></li>}
+          <li><button type="button" class="link-button" data-print>Descargar CV en PDF</button></li>
+        </ul>
+      </section>
+    </main>
+
+    <!-- Versión para imprimir («Descargar PDF»): CV clásico de una columna; en pantalla no se ve. -->
+    <article class="print-cv">
+      <header class="pcv-header">
+        <div>
+          <h1>{cv.name}</h1>
+          {cv.headline && (
+            <p class="pcv-headline">
+              {headlineRole}
+              {headlineTech && <span class="headline-tech">{headlineTech}</span>}
+            </p>
+          )}
+          <p class="pcv-contact">
+            {[cv.location, cv.email, cv.linkedin && handle(cv.linkedin), cv.github && handle(cv.github)]
+              .filter(Boolean)
+              .join('  ·  ')}
+          </p>
+        </div>
+        <img src="/photo.jpg" alt="" width="478" height="622" />
+      </header>
+
+      {cv.about && (
+        <section>
+          <h2>Perfil</h2>
+          <p>{cv.about}</p>
+        </section>
+      )}
+
+      {cv.experience.length > 0 && (
+        <section>
+          <h2>Experiencia</h2>
+          {cv.experience.map((e) => (
+            <div class="pcv-item">
+              <div class="pcv-row">
+                <p>
+                  <strong>{e.role}</strong>
+                  {e.company && <span> · {e.company}</span>}
+                  {e.via && <span class="pcv-muted"> (a través de {e.via})</span>}
+                </p>
+                <span class="pcv-date">{period(e.start, e.end)}</span>
+              </div>
+              {e.sector && <p class="pcv-muted">Sector: {e.sector}</p>}
+              {e.description && <p>{e.description}</p>}
+              {e.achievements.length > 0 && (
+                <ul>
+                  {e.achievements.map((a) => <li>{a}</li>)}
+                </ul>
+              )}
+              {e.technologies.length > 0 && <p class="pcv-tech">{e.technologies.join(' · ')}</p>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {cv.projects.length > 0 && (
+        <section>
+          <h2>Proyectos</h2>
+          {cv.projects.map((p) => (
+            <div class="pcv-item">
+              <div class="pcv-row">
+                <p><strong>{p.name}</strong></p>
+                {p.url && <span class="pcv-date">{handle(p.url)}</span>}
+              </div>
+              {p.description && <p>{p.description}</p>}
+              {p.technologies.length > 0 && <p class="pcv-tech">{p.technologies.join(' · ')}</p>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {(cv.skills.length > 0 || cv.practices.length > 0 || cv.softSkills.length > 0) && (
+        <section>
+          <h2>Habilidades</h2>
+          <dl class="pcv-skills">
+            {cv.skills.map((g) => (
+              <>
+                <dt>{g.name}</dt>
+                <dd>{g.items.join(', ')}</dd>
+              </>
+            ))}
+            {cv.practices.length > 0 && (
+              <>
+                <dt>Prácticas</dt>
+                <dd>{cv.practices.join(', ')}</dd>
+              </>
+            )}
+            {cv.softSkills.length > 0 && (
+              <>
+                <dt>Personales</dt>
+                <dd>{cv.softSkills.join(', ')}</dd>
+              </>
+            )}
+          </dl>
+        </section>
+      )}
+
+      {cv.education.length > 0 && (
+        <section>
+          <h2>Formación</h2>
+          {cv.education.map((e) => (
+            <div class="pcv-row pcv-edu">
+              <p>
+                <strong>{e.title}</strong>
+                <span class="pcv-muted"> · {[e.center, e.place].filter(Boolean).join(', ')}</span>
+              </p>
+              {e.year && <span class="pcv-date">{e.year}</span>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {cv.languages.length > 0 && (
+        <section>
+          <h2>Idiomas</h2>
+          <p>{cv.languages.map((l) => (l.level ? `${l.name} (${l.level.toLowerCase()})` : l.name)).join(' · ')}</p>
+        </section>
+      )}
+
+      <p class="pcv-footer">Versión actualizada: {handle(Astro.site?.href ?? '')}</p>
+    </article>
+
+    <footer class="footer">
+      <p>© {now.getFullYear()} {cv.name}</p>
+    </footer>
+
+    <script>
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Aparición al entrar en pantalla (escalonada entre hermanos).
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target as HTMLElement;
+            const siblings = el.parentElement ? [...el.parentElement.children].filter((c) => c.classList.contains('reveal')) : [];
+            el.style.setProperty('--delay', `${Math.max(0, siblings.indexOf(el)) * 90}ms`);
+            el.classList.add('visible');
+            observer.unobserve(el);
+          }
+        },
+        { threshold: 0.15, rootMargin: '0px 0px -40px 0px' },
+      );
+      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+      // Contadores de las cifras.
+      const counters = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (!entry.isIntersecting) continue;
+            const el = entry.target as HTMLElement;
+            counters.unobserve(el);
+            const target = Number(el.dataset.count);
+            if (reduced || !target) continue;
+            const start = performance.now();
+            const step = (t: number) => {
+              const p = Math.min(1, (t - start) / 1400);
+              el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+              if (p < 1) requestAnimationFrame(step);
+            };
+            el.textContent = '0';
+            requestAnimationFrame(step);
+          }
+        },
+        { threshold: 0.6 },
+      );
+      document.querySelectorAll<HTMLElement>('[data-count]').forEach((el) => counters.observe(el));
+
+      // Barra de progreso de lectura, cabecera compacta y línea de la experiencia.
+      const root = document.documentElement;
+      const timeline = document.querySelector<HTMLElement>('.timeline');
+      const onScroll = () => {
+        const max = root.scrollHeight - root.clientHeight;
+        root.style.setProperty('--scroll', String(max > 0 ? root.scrollTop / max : 0));
+        document.body.classList.toggle('scrolled', root.scrollTop > 40);
+        if (timeline) {
+          const rect = timeline.getBoundingClientRect();
+          const seen = (window.innerHeight * 0.6 - rect.top) / rect.height;
+          timeline.style.setProperty('--fill', String(Math.min(1, Math.max(0, seen))));
+        }
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // «Descargar PDF»: el diálogo de impresión del navegador (Guardar como PDF), con la hoja de estilo de papel.
+      document.querySelectorAll('[data-print]').forEach((button) => button.addEventListener('click', () => window.print()));
+
+      // Foco de luz que sigue al ratón en las tarjetas.
+      if (!reduced && window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll<HTMLElement>('.spot').forEach((card) => {
+          card.addEventListener('pointermove', (e) => {
+            const r = card.getBoundingClientRect();
+            card.style.setProperty('--x', `${e.clientX - r.left}px`);
+            card.style.setProperty('--y', `${e.clientY - r.top}px`);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

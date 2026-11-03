@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "cv": {
+    "name": "Iván Repiso",
+    "headline": "Desarrollador backend senior · Java y Spring Boot · Microservicios",
+    "location": "Paterna, Valencia",
+    "email": "irepisocamara@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/ivan-repiso/",
+    "github": "https://github.com/repicam",
+    "about": "Desarrollador backend con más de seis años de experiencia en arquitecturas de microservicios. He desarrollado servicios con Java y el ecosistema Spring (Boot, Data, Cloud y Security) y, en mi etapa actual, librerías .NET compartidas por los microservicios y herramientas en Python que automatizan su generación. Fuera del trabajo construyo proyectos propios de principio a fin, del modelo de datos al despliegue. Busco un equipo en el que aportar experiencia técnica, cuidar la calidad del código y seguir creciendo.",
+    "experience": [
+      {
+        "company": "Indra",
+        "via": "Métrica Consulting SL",
+        "sector": "",
+        "role": "Desarrollador de software",
+        "start": "2024-05",
+        "end": "",
+        "description": "Proyecto basado en microservicios. Desarrollo de librerías con .NET para usar con los microservicios y de una herramienta en Python que autogenera microservicios.",
+        "achievements": [],
+        "technologies": [
+          "C#",
+          ".NET",
+          "Python",
+          "Git",
+          "Docker"
+        ]
+      },
+      {
+        "company": "PFS Group",
+        "via": "",
+        "sector": "",
+        "role": "Desarrollador de software",
+        "start": "2020-07",
+        "end": "2024-05",
+        "description": "Proyecto basado en microservicios. Desarrollo de software con Java y bases de datos SQL.",
+        "achievements": [],
+        "technologies": [
+          "Java",
+          "Spring Boot",
+          "Spring Data",
+          "Spring Cloud",
+          "Spring Security",
+          "JavaScript",
+          "SQL",
+          "Git",
+          "Docker",
+          "Kanban"
+        ]
+      }
+    ],
+    "projects": [
+      {
+        "name": "CompoundDays",
+        "url": "",
+        "description": "Aplicación personal de productividad (tareas, hábitos, entrenos y calendario) con captura desde el móvil por Telegram. API en Java 25 y Spring Boot 4 con PostgreSQL y Flyway, front en Angular 21 y PrimeNG, y un worker en Python; desplegada con Docker en un VPS propio con despliegue automático.",
+        "technologies": [
+          "Java",
+          "Spring Boot",
+          "PostgreSQL",
+          "Flyway",
+          "Angular",
+          "PrimeNG",
+          "Python",
+          "Docker"
+        ]
+      }
+    ],
+    "education": [
+      {
+        "title": "Técnico superior en Desarrollo de Aplicaciones Web (DAW)",
+        "center": "CIPFP Mislata",
+        "place": "Mislata, Valencia",
+        "year": "2020"
+      },
+      {
+        "title": "Técnico en Sistemas Microinformáticos y Redes (SMR)",
+        "center": "CIPFP Mislata",
+        "place": "Mislata, Valencia",
+        "year": "2018"
+      }
+    ],
+    "skills": [
+      {
+        "name": "Backend",
+        "items": [
+          "Java",
+          "Spring Boot",
+          "Spring Data",
+          "Spring Cloud",
+          "Spring Security",
+          "C#",
+          ".NET",
+          "Python"
+        ]
+      },
+      {
+        "name": "Datos",
+        "items": [
+          "SQL",
+          "Bases de datos relacionales"
+        ]
+      },
+      {
+        "name": "Frontend",
+        "items": [
+          "JavaScript"
+        ]
+      },
+      {
+        "name": "Herramientas",
+        "items": [
+          "Git",
+          "Docker",
+          "Kanban"
+        ]
+      }
+    ],
+    "practices": [],
+    "softSkills": [
+      "Trabajo en equipo",
+      "Organización",
+      "Creatividad",
+      "Resolutivo",
+      "Dinamismo",
+      "Responsabilidad"
+    ],
+    "languages": [
+      {
+        "name": "Castellano",
+        "level": "Nativo"
+      },
+      {
+        "name": "Inglés",
+        "level": "Intermedio"
+      }
+    ]
+  }
+}
