@@ -52,6 +52,28 @@ const current = cv.experience.find((e) => !e.end);
 const handle = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 const firstName = cv.name.split(' ')[0];
 const description = [cv.headline, cv.location].filter(Boolean).join(' · ');
+/** Fecha de la compilación: cada «Publicar» es un commit que vuelve a compilar, así que es la de la última publicación. */
+const updated = new Intl.DateTimeFormat('es-ES', { month: 'long', year: 'numeric', timeZone: 'Europe/Madrid' }).format(now);
+const siteUrl = Astro.site?.href ?? '/';
+const photoUrl = new URL('/photo.jpg', Astro.site).href;
+
+/** Datos estructurados (schema.org Person) para buscadores y vistas previas. */
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: cv.name,
+  jobTitle: cv.headline.split(' · ')[0],
+  description: cv.about || undefined,
+  url: siteUrl,
+  image: photoUrl,
+  email: cv.email ? `mailto:${cv.email}` : undefined,
+  address: cv.location ? { '@type': 'PostalAddress', addressLocality: cv.location, addressCountry: 'ES' } : undefined,
+  sameAs: [cv.linkedin, cv.github].filter(Boolean),
+  worksFor: cv.experience.find((e) => !e.end) ? { '@type': 'Organization', name: cv.experience.find((e) => !e.end)?.company } : undefined,
+  alumniOf: [...new Set(cv.education.map((e) => e.center).filter(Boolean))].map((name) => ({ '@type': 'EducationalOrganization', name })),
+  knowsAbout: [...new Set([...cv.skills.flatMap((g) => g.items), ...cv.practices])],
+  knowsLanguage: cv.languages.map((l) => l.name),
+};
 /** Titular en dos líneas: hasta el primer « · », el puesto; el resto (tecnologías), debajo. */
 const [headlineRole, ...headlineRest] = cv.headline.split(' · ');
 const headlineTech = headlineRest.join(' · ');
@@ -66,7 +88,14 @@ const headlineTech = headlineRest.join(' · ');
     <meta name="description" content={description} />
     <meta property="og:title" content={`${cv.name} · CV`} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL('/photo.jpg', Astro.site).href} />
+    <meta property="og:image" content={photoUrl} />
+    <meta property="og:image:alt" content={`Foto de ${cv.name}`} />
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:locale" content="es_ES" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="canonical" href={siteUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(personLd)} />
     <meta name="theme-color" content="#070b1f" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>document.documentElement.classList.add('js');</script>
@@ -396,11 +425,11 @@ const headlineTech = headlineRest.join(' · ');
         </section>
       )}
 
-      <p class="pcv-footer">Versión actualizada: {handle(Astro.site?.href ?? '')}</p>
+      <p class="pcv-footer">Actualizado en {updated} · versión al día en {handle(siteUrl)}</p>
     </article>
 
     <footer class="footer">
-      <p>© {now.getFullYear()} {cv.name}</p>
+      <p>© {now.getFullYear()} {cv.name} · Actualizado en {updated}</p>
     </footer>
 
     <script>
