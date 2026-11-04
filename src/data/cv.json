@@ -69,7 +69,7 @@
       "name" : "Herramientas",
       "items" : [ "Git", "GitLab", "Docker" ]
     } ],
-    "practices" : [ "Microservicios", "Arquitectura multitenant", "Caché", "Migraciones con Flyway", "Agile/Scrum", "Testing con JUnit y Mockito", "CI/CD", "Desarrollo asistido por IA (Claude Code) con revisión y verificación" ],
+    "practices" : [ "Microservicios", "Arquitectura multitenant", "Caché", "Migraciones con Flyway", "Agile/Scrum", "Testing con JUnit y Mockito", "CI/CD", "Desarrollo asistido por IA" ],
     "softSkills" : [ "Trabajo en equipo", "Organización", "Creatividad", "Resolutivo", "Dinamismo", "Responsabilidad" ],
     "languages" : [ {
       "name" : "Castellano",
