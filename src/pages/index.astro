@@ -77,6 +77,8 @@ const personLd = {
 /** Titular en dos líneas: hasta el primer « · », el puesto; el resto (tecnologías), debajo. */
 const [headlineRole, ...headlineRest] = cv.headline.split(' · ');
 const headlineTech = headlineRest.join(' · ');
+/** Etiquetas flotantes junto a la foto de la portada (fijas, no salen de cv.json). */
+const HERO_TAGS = ['Java', 'Microservicios', 'Spring Boot', 'IA'];
 ---
 
 <!doctype html>
@@ -128,10 +130,7 @@ const headlineTech = headlineRest.join(' · ');
             <span class="hero-greeting">Hola, soy</span>
             <span class="hero-name"><span class="gradient">{firstName}</span> {cv.name.slice(firstName.length).trim()}</span>
           </h1>
-          <p class="headline reveal">
-            {headlineRole}
-            {headlineTech && <span class="headline-tech">{headlineTech}</span>}
-          </p>
+          <p class="headline reveal">{headlineRole}</p>
           {cv.location && <p class="location reveal">📍 {cv.location}</p>}
           <div class="hero-actions reveal">
             {cv.email && <a class="btn btn-primary" href={`mailto:${cv.email}`}>Hablemos</a>}
@@ -142,7 +141,7 @@ const headlineTech = headlineRest.join(' · ');
         <div class="hero-photo reveal">
           <div class="ring"></div>
           <img src="/photo.jpg" alt={`Foto de ${cv.name}`} width="478" height="622" />
-          {allTech.slice(0, 4).map((tech, i) => <span class={`floating f${i}`}>{tech}</span>)}
+          {HERO_TAGS.map((tech, i) => <span class={`floating f${i}`}>{tech}</span>)}
         </div>
       </section>
 
@@ -321,7 +320,9 @@ const headlineTech = headlineRest.join(' · ');
             </p>
           )}
           <p class="pcv-contact">
-            {[cv.location, cv.email, cv.linkedin && handle(cv.linkedin), cv.github && handle(cv.github)]
+            {cv.location}
+            {cv.location && <br />}
+            {[cv.email, cv.linkedin && handle(cv.linkedin), cv.github && handle(cv.github)]
               .filter(Boolean)
               .join('  ·  ')}
           </p>
@@ -504,6 +505,19 @@ const headlineTech = headlineRest.join(' · ');
             card.style.setProperty('--y', `${e.clientY - r.top}px`);
           });
         });
+      }
+
+      // Cinta de tecnologías: orden aleatorio en cada carga (la pista lleva la lista dos veces para el bucle).
+      const track = document.querySelector<HTMLElement>('.marquee-track');
+      if (track) {
+        const spans = [...track.children] as HTMLElement[];
+        const half = spans.length / 2;
+        const items = spans.slice(0, half).map((s) => s.textContent ?? '');
+        for (let i = items.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [items[i], items[j]] = [items[j], items[i]];
+        }
+        spans.forEach((s, i) => (s.textContent = items[i % half]));
       }
     </script>
   </body>
