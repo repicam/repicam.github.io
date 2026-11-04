@@ -230,9 +230,9 @@ const headlineTech = headlineRest.join(' · ');
         </section>
       )}
 
-      {(cv.skills.length > 0 || cv.practices.length > 0 || cv.softSkills.length > 0) && (
+      {(cv.skills.length > 0 || cv.practices.length > 0) && (
         <section class="section" id="habilidades">
-          <h2 class="section-title reveal">Habilidades</h2>
+          <h2 class="section-title reveal">Habilidades técnicas</h2>
           {allTech.length > 0 && (
             <div class="marquee reveal" aria-hidden="true">
               <div class="marquee-track">
@@ -257,15 +257,16 @@ const headlineTech = headlineRest.join(' · ');
                 </ul>
               </article>
             )}
-            {cv.softSkills.length > 0 && (
-              <article class="card spot reveal">
-                <h3>Personales</h3>
-                <ul class="chips chips-soft">
-                  {cv.softSkills.map((t) => <li>{t}</li>)}
-                </ul>
-              </article>
-            )}
           </div>
+        </section>
+      )}
+
+      {cv.softSkills.length > 0 && (
+        <section class="section" id="soft-skills">
+          <h2 class="section-title reveal">Soft skills</h2>
+          <ul class="chips chips-soft reveal">
+            {cv.softSkills.map((t) => <li>{t}</li>)}
+          </ul>
         </section>
       )}
 
@@ -377,9 +378,9 @@ const headlineTech = headlineRest.join(' · ');
         </section>
       )}
 
-      {(cv.skills.length > 0 || cv.practices.length > 0 || cv.softSkills.length > 0) && (
+      {(cv.skills.length > 0 || cv.practices.length > 0) && (
         <section>
-          <h2>Habilidades</h2>
+          <h2>Habilidades técnicas</h2>
           <dl class="pcv-skills">
             {cv.skills.map((g) => (
               <>
@@ -393,13 +394,14 @@ const headlineTech = headlineRest.join(' · ');
                 <dd>{cv.practices.join(', ')}</dd>
               </>
             )}
-            {cv.softSkills.length > 0 && (
-              <>
-                <dt>Personales</dt>
-                <dd>{cv.softSkills.join(', ')}</dd>
-              </>
-            )}
           </dl>
+        </section>
+      )}
+
+      {cv.softSkills.length > 0 && (
+        <section>
+          <h2>Soft skills</h2>
+          <p>{cv.softSkills.join(' · ')}</p>
         </section>
       )}
 
