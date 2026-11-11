@@ -17,7 +17,7 @@
       "end" : "",
       "description" : "Desarrollo en varios proyectos de smart city multitenant para ayuntamientos: plataformas de gestión del agua, vertidos, partes de trabajo y turismo, entre otras.",
       "achievements" : [ "Reduje la carga de la plataforma extrayendo sus módulos críticos a microservicios.", "Detecté la sobrecarga de la base de datos y cacheé las consultas más repetidas, invalidando la caché al crear o editar para no servir datos desactualizados.", "Diseñé y desarrollé de principio a fin un proyecto de gestión de vertidos, consumos y contratos de agua: requisitos, arquitectura e implementación.", "Impartí un workshop interno de Claude Code y di soporte a los compañeros en su adopción." ],
-      "technologies" : [ "Java", "Spring Boot", "Spring Data", "Spring Cloud", "Spring Security", "Angular", "PrimeNG", "PostgreSQL", "GitLab" ]
+      "technologies" : [ "Java", "Spring Boot", "Spring Data", "Spring Cloud", "Spring Security", "Angular", "PrimeNG", "PostgreSQL", "GitLab", "Caché redis", "RabbitMQ" ]
     }, {
       "company" : "Indra",
       "via" : "Métrica Consulting SL",
@@ -67,9 +67,9 @@
       "items" : [ "Angular", "PrimeNG" ]
     }, {
       "name" : "Herramientas",
-      "items" : [ "Git", "GitLab", "Docker" ]
+      "items" : [ "Git", "GitLab", "Docker", "RabbitMQ" ]
     } ],
-    "practices" : [ "Microservicios", "Arquitectura multitenant", "Caché", "Migraciones con Flyway", "Agile/Scrum", "Testing con JUnit y Mockito", "CI/CD", "Desarrollo asistido por IA" ],
+    "practices" : [ "Microservicios", "Arquitectura multitenant", "Caché", "Colas", "Migraciones con Flyway", "Agile/Scrum", "Testing con JUnit y Mockito", "CI/CD", "Desarrollo asistido por IA" ],
     "softSkills" : [ "Trabajo en equipo", "Organización", "Creatividad", "Resolutivo", "Dinamismo", "Responsabilidad" ],
     "languages" : [ {
       "name" : "Castellano",
